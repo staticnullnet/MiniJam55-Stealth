@@ -48,6 +48,7 @@ namespace SA
 
         public Transform mTransform;
         public CharState curState;
+        public ControlState ctrlState;
         public float delta;
 
         public void Init()
@@ -128,6 +129,7 @@ namespace SA
                 default:
                     break;
             }
+
         }
 
         void MovementNormal()
@@ -211,10 +213,21 @@ namespace SA
             return false;
         }
 
+        public void Crouch()
+        {
+            bool crouch = anim.GetBool("crouch");
+            anim.SetBool("crouch", !crouch);
+        }
+
     }
 
     public enum CharState
     {
-        normal,onAir,cover,vaulting
+        normal, onAir, cover, vaulting
+    }
+
+    public enum ControlState
+    {
+        normal, crouching, aiming
     }
 }

@@ -52,6 +52,14 @@ namespace SA
             horizontal = Input.GetAxis("Horizontal");
         }
 
+        void GetInput_Update()
+        {
+            if (Input.GetButtonDown("Crouch"))
+            {
+                states.Crouch();
+            }
+        }
+
         void InGame_UpdateStates_FixedUpdate()
         {
             states.inp.horizontal = horizontal;
@@ -72,6 +80,8 @@ namespace SA
 
             delta = Time.deltaTime;
 
+            GetInput_Update();
+        
             states.Tick(delta);
         }
 
