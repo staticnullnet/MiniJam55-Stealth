@@ -18,6 +18,11 @@ public class CameraManager : MonoBehaviour
         cameraPosLocked = false;
     }
 
+    /// <summary>
+    /// TODO: add array waypoint support to MoveCamera();
+    /// Add ability to set the cameras 'look' position either on final waypoint or each iteration
+    /// </summary>
+
     private void Update()
     {
         if (cameraPosLocked == false) {
