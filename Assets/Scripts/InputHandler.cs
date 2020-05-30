@@ -58,6 +58,15 @@ namespace SA
             {
                 states.Crouch();
             }
+
+            if (Input.GetButtonDown("Action")) {
+                //currently supporting ONE collectable not multiples
+                GameObject collectable = GameObject.FindWithTag("Collectable");
+                if (Vector3.Distance(transform.position, collectable.transform.position) < 2f)
+                {
+                    collectable.GetComponent<Collectable>().Collect();
+                }
+            }
         }
 
         void InGame_UpdateStates_FixedUpdate()
