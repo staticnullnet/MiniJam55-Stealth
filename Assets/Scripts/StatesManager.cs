@@ -41,6 +41,10 @@ namespace SA
 
         List<Collider> ragdollColliders = new List<Collider>();
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
+        [HideInInspector]
+        public LayerMask ignoreLayers;
+        [HideInInspector]
+        public LayerMask ignoreForGround;
 
         public Transform mTransform;
         public CharState curState;
@@ -59,6 +63,9 @@ namespace SA
             controllerCollider = GetComponent<Collider>();
 
             SetupRagdoll();
+
+            ignoreLayers = ~(1 << 9);
+            ignoreForGround = ~(1 << 9 | 1 << 10);
         }
 
         void SetupAnimator()
