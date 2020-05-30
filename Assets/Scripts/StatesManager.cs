@@ -41,10 +41,6 @@ namespace SA
 
         List<Collider> ragdollColliders = new List<Collider>();
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
-        [HideInInspector]
-        public LayerMask ignoreLayers;
-        [HideInInspector]
-        public LayerMask ignoreForGround;
 
         public Transform mTransform;
         public CharState curState;
@@ -63,9 +59,6 @@ namespace SA
             controllerCollider = GetComponent<Collider>();
 
             SetupRagdoll();
-
-            ignoreLayers = ~(1 << 9);
-            ignoreForGround = ~(1 << 9 | 1 << 10);
         }
 
         void SetupAnimator()
@@ -121,10 +114,6 @@ namespace SA
                 case CharState.onAir:
                     rigid.drag = 0;
                     states.onGround = OnGround();
-                    break;
-                case CharState.cover:
-                    break;
-                case CharState.vaulting:
                     break;
                 default:
                     break;
@@ -186,10 +175,6 @@ namespace SA
                     break;
                 case CharState.onAir:
                     states.onGround = OnGround();
-                    break;
-                case CharState.cover:
-                    break;
-                case CharState.vaulting:
                     break;
                 default:
                     break;
