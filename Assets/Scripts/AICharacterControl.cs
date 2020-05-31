@@ -89,7 +89,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                        
             if (agent.remainingDistance < agent.stoppingDistance)
             {
-                Debug.Log("waiting... " + patrolTimer);
+                //Debug.Log("waiting... " + patrolTimer);
                 patrolTimer += Time.deltaTime;
 
                 // If the timer exceeds the wait time...
@@ -101,7 +101,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                     else
                         wayPointIndex++;
 
-                    Debug.Log("Current waypoint index:" + wayPointIndex);
+                    //Debug.Log("Current waypoint index:" + wayPointIndex);
                     // Reset the timer.
                     patrolTimer = 0;
                 }
@@ -113,7 +113,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 else
                 {
                     character.Move(Vector3.zero, false, false);
-                    Debug.Log("stopping");
+                    //Debug.Log("stopping");
                 }
                     
 
