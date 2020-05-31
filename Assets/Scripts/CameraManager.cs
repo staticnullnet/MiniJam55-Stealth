@@ -8,11 +8,13 @@ public class CameraManager : MonoBehaviour
     private bool cameraPosLocked;
     private bool cameraTargetPlayer;
     private int currentCameraWaypoint = 0;
+    private float cameraTurningRate = 30f;
 
     //the direct next movement
     private Transform newPosition;
     //all movements the camera has to make
     private Transform[] newPositions;
+    private Transform lastPosition;
 
     private float cameraMoveSpeed;
 
@@ -23,8 +25,7 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// TODO: add array waypoint support to MoveCamera();
-    /// Add ability to set the cameras 'look' position either on final waypoint or each iteration
+    /// TODO: potentially add the ability to transition the waypoints of the current trigger in reverse if the player goes backwards to the previous trigger
     /// </summary>
 
     private void Update()
@@ -32,21 +33,36 @@ public class CameraManager : MonoBehaviour
         if (cameraPosLocked == false) {
 
             float step = cameraMoveSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, newPosition.position, step);
-            if (transform.position == newPosition.position) {
-                if (transform.position == newPosition.position && newPositions.Length == currentCameraWaypoint)
-                {
-                    cameraPosLocked = true;
-                }
-                else
-                {
-                    currentCameraWaypoint++;
-                }
-                
-            }
-            if (newPositions.Length > 1)
+            if (newPosition != null)
             {
-                newPosition = newPositions[currentCameraWaypoint];
+                transform.position = Vector3.MoveTowards(transform.position, newPosition.position, step);
+
+                Quaternion targetRotation = newPosition.transform.rotation;
+
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, cameraTurningRate * Time.deltaTime);
+
+                if (transform.position == newPosition.position)
+                {
+                    if (transform.position == lastPosition.position && newPositions.Length == currentCameraWaypoint)
+                    {
+                        cameraPosLocked = true;
+                        newPosition = null;
+                        currentCameraWaypoint = 0;
+                    }
+                    else
+                    {
+                        if (newPositions.Length != currentCameraWaypoint && currentCameraWaypoint <= newPositions.Length)
+                        {
+                            currentCameraWaypoint += 1;
+                            Debug.Log("current waypoint: " + currentCameraWaypoint + " current positions array length: " + newPositions.Length);
+                        }
+                    }
+
+                }
+                if (newPositions.Length > 1)
+                {
+                    newPosition = newPositions[currentCameraWaypoint];
+                }
             }
         }
         if (cameraPosLocked && cameraTargetPlayer) {
@@ -59,6 +75,7 @@ public class CameraManager : MonoBehaviour
         cameraPosLocked = false;
         newPositions = newPos;
         newPosition = newPos[0];
+        lastPosition = newPos[newPos.Length - 1];
         cameraTargetPlayer = targetPlayer;
         cameraMoveSpeed = moveSpeed;
     }
@@ -67,4 +84,6 @@ public class CameraManager : MonoBehaviour
     {
         transform.LookAt(player.transform);
     }
+
+
 }

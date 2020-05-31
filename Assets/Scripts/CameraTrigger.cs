@@ -24,12 +24,25 @@ public class CameraTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!areaTriggered) {
+        if (!areaTriggered)
+        {
             if (other.tag == "Player")
             {
                 cm.MoveCamera(newCameraLocations, cameraMoveSpeed, targetPlayer);
+                areaTriggered = true;
             }
         }
-        
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+
+        if (other.tag == "Player")
+        {
+            areaTriggered = false;
+        }
+
+
     }
 }
