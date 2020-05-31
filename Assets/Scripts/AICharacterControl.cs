@@ -88,7 +88,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             if (wayPoints.Length == 0)
                 return;
 
-            Debug.Log(agent.remainingDistance + " remainingDistance | stoppingDistance " + agent.stoppingDistance);
+            //Debug.Log(agent.remainingDistance + " remainingDistance | stoppingDistance " + agent.stoppingDistance);
             if (agent.remainingDistance < agent.stoppingDistance)
             {
                 patrolTimer += Time.deltaTime;
@@ -102,6 +102,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                     else
                         wayPointIndex++;
 
+
+                    Debug.Log("Current waypoint index:" + wayPointIndex);
                     // Reset the timer.
                     patrolTimer = 0;
                 }
