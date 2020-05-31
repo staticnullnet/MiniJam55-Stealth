@@ -47,6 +47,10 @@ namespace SA
         public LayerMask ignoreForGround;
 
         public Transform mTransform;
+        [HideInInspector]
+        public CapsuleCollider m_Capsule;
+        private float defaultCapsuleHeight = 1f;
+        private Vector3 defaultCapsuleCenter = new Vector3(0, 0.75f, 0);
         public CharState curState;
         public ControlState ctrlState;
         public float delta;
@@ -61,6 +65,12 @@ namespace SA
             rigid.angularDrag = 999;
             rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
             controllerCollider = GetComponent<Collider>();
+
+            m_Capsule = controllerCollider.GetComponent<CapsuleCollider>();
+
+            m_Capsule.height = 1f;
+            m_Capsule.center = new Vector3(0, 0.75f, 0);
+
 
             SetupRagdoll();
 
@@ -209,6 +219,31 @@ namespace SA
         {
             bool crouch = anim.GetBool("crouch");
             anim.SetBool("crouch", !crouch);
+            ScaleCapsuleForCrouching();
+        }
+
+        public bool IsCrouching()
+        {
+            return anim.GetBool("crouch");
+        }
+
+        void ScaleCapsuleForCrouching()
+        {
+            bool crouch = IsCrouching();
+
+            if (OnGround() && crouch)
+            {
+                if (m_Capsule.height == defaultCapsuleHeight) {
+                    m_Capsule.height = m_Capsule.height / 2f;
+                    m_Capsule.center = m_Capsule.center / 2f;
+                }
+                
+            }
+            else
+            {
+                m_Capsule.height = defaultCapsuleHeight;
+                m_Capsule.center = defaultCapsuleCenter;
+            }
         }
 
     }
