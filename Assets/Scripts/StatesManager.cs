@@ -122,10 +122,6 @@ namespace SA
                     rigid.drag = 0;
                     states.onGround = OnGround();
                     break;
-                case CharState.cover:
-                    break;
-                case CharState.vaulting:
-                    break;
                 default:
                     break;
             }
@@ -186,10 +182,6 @@ namespace SA
                     break;
                 case CharState.onAir:
                     states.onGround = OnGround();
-                    break;
-                case CharState.cover:
-                    break;
-                case CharState.vaulting:
                     break;
                 default:
                     break;

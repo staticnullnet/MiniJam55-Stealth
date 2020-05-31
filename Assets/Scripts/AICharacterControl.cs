@@ -25,6 +25,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         
         Transform player; // player reference
         Transform target; // target to aim for
+        [SerializeField] Transform eyePosition; // where to look from
 
         float patrolTimer = 0f;
         [SerializeField] GameObject alertIndicator;
@@ -149,11 +150,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         private bool IsVisionToPlayerUnobstructed()
         {
-            Ray rayToPlayer = new Ray(transform.position, player.transform.position - transform.position);
+            Ray rayToPlayer = new Ray(eyePosition.transform.position, player.GetComponent<CapsuleCollider>().bounds.center - eyePosition.transform.position);
             RaycastHit hit;
             bool result = false;
 
-            //Debug.DrawRay(transform.position, player.transform.position - transform.position);
+            Debug.DrawRay(eyePosition.transform.position, player.GetComponent<CapsuleCollider>().bounds.center - eyePosition.transform.position);
 
             result = Physics.Raycast(rayToPlayer, out hit, maxDistance);
 
