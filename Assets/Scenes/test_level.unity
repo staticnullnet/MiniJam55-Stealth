@@ -159,7 +159,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-50230
+  m_Name: pb_Mesh18902
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -322,7 +322,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-49672
+  m_Name: pb_Mesh18816
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -552,7 +552,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh35084
+  m_Name: pb_Mesh18924
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1298,6 +1298,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 857481884}
     m_Modifications:
+    - target: {fileID: 8923158886028774286, guid: e2cc16fc247d61545a7dcb078fd8662a,
+        type: 3}
+      propertyPath: m_MoveSpeedMultiplier
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8923158886028853510, guid: e2cc16fc247d61545a7dcb078fd8662a,
         type: 3}
       propertyPath: wayPoints.Array.size
@@ -1347,6 +1352,11 @@ PrefabInstance:
         type: 3}
       propertyPath: rotationSpeed
       value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 8923158886028853510, guid: e2cc16fc247d61545a7dcb078fd8662a,
+        type: 3}
+      propertyPath: moveDelay
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8923158886038537888, guid: e2cc16fc247d61545a7dcb078fd8662a,
         type: 3}
@@ -1410,8 +1420,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8923158886053591908, guid: e2cc16fc247d61545a7dcb078fd8662a,
         type: 3}
-      propertyPath: m_Acceleration
-      value: 3
+      propertyPath: m_StoppingDistance
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2cc16fc247d61545a7dcb078fd8662a, type: 3}
@@ -1427,7 +1437,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh35050
+  m_Name: pb_Mesh18890
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1900,7 +1910,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-50228
+  m_Name: pb_Mesh18834
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2404,7 +2414,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-47854
+  m_Name: pb_Mesh18796
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

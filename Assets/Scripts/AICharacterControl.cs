@@ -31,8 +31,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         [SerializeField] GameObject alertIndicator;
         [SerializeField] float enemyFOV = 60;
         [SerializeField] float maxDistance = 10f;
-        [SerializeField] float rotationSpeed = 1000f;
-        [SerializeField] float minDistance = 0.5f;
+        [SerializeField] float rotationSpeed = 1000f;        
         
         [SerializeField] float moveDelay = 5f;
         [SerializeField] private int wayPointIndex = 0;
@@ -87,10 +86,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // Returns if no points have been set up
             if (wayPoints.Length == 0)
                 return;
-
-            //Debug.Log(agent.remainingDistance + " remainingDistance | stoppingDistance " + agent.stoppingDistance);
+                       
             if (agent.remainingDistance < agent.stoppingDistance)
             {
+                Debug.Log("waiting... " + patrolTimer);
                 patrolTimer += Time.deltaTime;
 
                 // If the timer exceeds the wait time...
@@ -102,7 +101,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                     else
                         wayPointIndex++;
 
-
                     Debug.Log("Current waypoint index:" + wayPointIndex);
                     // Reset the timer.
                     patrolTimer = 0;
@@ -113,22 +111,16 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 if (agent.remainingDistance > agent.stoppingDistance)
                     character.Move(agent.desiredVelocity, false, false);
                 else
+                {
                     character.Move(Vector3.zero, false, false);
+                    Debug.Log("stopping");
+                }
+                    
 
                 patrolTimer = 0;
             }
             
             agent.destination = wayPoints[wayPointIndex].position;             
-        }
-
-
-        IEnumerator WaitThenMoveToNextWaypoint()
-        {
-            isMoving = false;
-            yield return new WaitForSeconds(moveDelay);
-            wayPointIndex = (wayPointIndex + 1) % wayPoints.Length;
-            agent.SetDestination(wayPoints[wayPointIndex].transform.position);
-            yield break;
         }
 
         private bool IsPlayerVisible()
