@@ -113,9 +113,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 else
                 {
                     character.Move(Vector3.zero, false, false);
-                    //Debug.Log("stopping");
                 }
-                    
 
                 patrolTimer = 0;
             }
