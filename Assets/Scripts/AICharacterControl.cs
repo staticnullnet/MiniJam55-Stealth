@@ -86,9 +86,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // Returns if no points have been set up
             if (wayPoints.Length == 0)
                 return;
-                
-            //Debug.Log(agent.remainingDistance + " remainingDistance | stoppingDistance " + agent.stoppingDistance);
-
+                       
             if (agent.remainingDistance < agent.stoppingDistance)
             {
                 //Debug.Log("waiting... " + patrolTimer);
