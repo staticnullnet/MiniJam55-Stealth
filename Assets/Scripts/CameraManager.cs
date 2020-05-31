@@ -16,6 +16,8 @@ public class CameraManager : MonoBehaviour
     private Transform[] newPositions;
     private Transform lastPosition;
 
+    private GameObject lastTrigger = null;
+
     private float cameraMoveSpeed;
 
     void Awake()
@@ -70,14 +72,22 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    public void MoveCamera(Transform[] newPos, float moveSpeed, bool targetPlayer)
+    public void MoveCamera(Transform[] newPos, float moveSpeed, bool targetPlayer, GameObject cameraTrigger)
     {
         cameraPosLocked = false;
+
+        if (cameraTrigger == lastTrigger)
+            System.Array.Reverse(newPos);
+
         newPositions = newPos;
         newPosition = newPos[0];
         lastPosition = newPos[newPos.Length - 1];
         cameraTargetPlayer = targetPlayer;
         cameraMoveSpeed = moveSpeed;
+
+        lastTrigger = cameraTrigger;
+
+        
     }
 
     private void TargetPlayer()

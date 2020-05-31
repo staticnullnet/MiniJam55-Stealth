@@ -28,7 +28,7 @@ public class CameraTrigger : MonoBehaviour
         {
             if (other.tag == "Player")
             {
-                cm.MoveCamera(newCameraLocations, cameraMoveSpeed, targetPlayer);
+                cm.MoveCamera(newCameraLocations, cameraMoveSpeed, targetPlayer, this.gameObject);
                 areaTriggered = true;
             }
         }
