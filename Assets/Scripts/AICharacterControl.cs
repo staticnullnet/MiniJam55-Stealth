@@ -87,7 +87,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             if (wayPoints.Length == 0)
                 return;
 
-            Debug.Log(agent.remainingDistance + " remainingDistance | stoppingDistance " + agent.stoppingDistance);
+            //Debug.Log(agent.remainingDistance + " remainingDistance | stoppingDistance " + agent.stoppingDistance);
             if (agent.remainingDistance < agent.stoppingDistance)
             {
                 patrolTimer += Time.deltaTime;
@@ -150,7 +150,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private bool IsVisionToPlayerUnobstructed()
         {
             Ray rayToPlayer = new Ray(transform.position, player.transform.position - transform.position);
-            LayerMask playerLayerMask = LayerMask.NameToLayer("Player");
             RaycastHit hit;
             bool result = false;
 
