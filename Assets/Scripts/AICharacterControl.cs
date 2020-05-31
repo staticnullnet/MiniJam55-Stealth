@@ -25,18 +25,18 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         
         Transform player; // player reference
         Transform target; // target to aim for
-        
-        
+
+        float patrolTimer = 0f;
         [SerializeField] GameObject alertIndicator;
         [SerializeField] float enemyFOV = 60;
         [SerializeField] float maxDistance = 10f;
         [SerializeField] float rotationSpeed = 1000f;
         [SerializeField] float minDistance = 0.5f;
         
-        [SerializeField] float moveDelay = 5f;        
-        private int destPoint = 0;
+        [SerializeField] float moveDelay = 5f;
+        [SerializeField] private int wayPointIndex = 0;
         private bool isMoving = false;
-        public Transform[] points;
+        public Transform[] wayPoints;
         float angleToPlayer;
 
 
@@ -72,53 +72,60 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             
             
             //pre baked chase-related commands in AI controller.
-            if (target != null)
-                agent.SetDestination(target.position);
+            //if (target != null)
+            //    agent.SetDestination(target.position);
 
-            if (agent.remainingDistance > agent.stoppingDistance)
-                character.Move(agent.desiredVelocity, false, false);
-            else
-                character.Move(Vector3.zero, false, false);
+            //if (agent.remainingDistance > agent.stoppingDistance)
+            //    character.Move(agent.desiredVelocity, false, false);
+            //else
+            //    character.Move(Vector3.zero, false, false);
         }
    
         private void Patrol()
-        {
-            isMoving = true;
-
+        { 
             // Returns if no points have been set up
-            if (points.Length == 0)
-            return;
+            if (wayPoints.Length == 0)
+                return;
 
+            Debug.Log(agent.remainingDistance + " remainingDistance | stoppingDistance " + agent.stoppingDistance);
+            if (agent.remainingDistance < agent.stoppingDistance)
+            {
+                patrolTimer += Time.deltaTime;
 
-            //if (agent.remainingDistance > agent.stoppingDistance)
-            //{
-            //    character.Move(agent.desiredVelocity, false, false);
-            //}
-            //else
-            //{
-            //    character.Move(Vector3.zero, false, false);
-            //}
+                // If the timer exceeds the wait time...
+                if (patrolTimer >= moveDelay)
+                {
+                    // ... increment the wayPointIndex.
+                    if (wayPointIndex == wayPoints.Length - 1)
+                        wayPointIndex = 0;
+                    else
+                        wayPointIndex++;
 
-
-            if (Vector3.Distance(transform.position, points[destPoint].transform.position) <= minDistance)
-            {                
-                StartCoroutine(WaitThenMoveToNextWaypoint());
-                isMoving = false;                
-            }            
+                    // Reset the timer.
+                    patrolTimer = 0;
+                }
+            }
             else
-            {   
-                character.Move(points[destPoint].transform.position - transform.position, false, false);
+            {
+                if (agent.remainingDistance > agent.stoppingDistance)
+                    character.Move(agent.desiredVelocity, false, false);
+                else
+                    character.Move(Vector3.zero, false, false);
+
+                patrolTimer = 0;
             }
             
+            agent.destination = wayPoints[wayPointIndex].position;             
         }
+
 
         IEnumerator WaitThenMoveToNextWaypoint()
         {
-                Debug.Log("waiting");
+            isMoving = false;
             yield return new WaitForSeconds(moveDelay);
-            destPoint = (destPoint + 1) % points.Length;
-                Debug.Log(destPoint);
-                yield break;
+            wayPointIndex = (wayPointIndex + 1) % wayPoints.Length;
+            agent.SetDestination(wayPoints[wayPointIndex].transform.position);
+            yield break;
         }
 
         private bool IsPlayerVisible()
@@ -200,7 +207,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                     // Make sure we got there
                     //transform.rotation = finalRotation;
                     isMoving = false;
-                    destPoint = (destPoint + 1) % points.Length;
+                    wayPointIndex = (wayPointIndex + 1) % wayPoints.Length;
                     
                     yield break;
                 }
@@ -212,10 +219,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         void TurnToNextPoint()
         {
             // Returns if no points have been set up
-            if (points.Length == 0)
+            if (wayPoints.Length == 0)
                 return;
 
-            IEnumerator coroutine = TurnToPoint(Quaternion.LookRotation(points[destPoint].position - transform.position), rotationSpeed);
+            IEnumerator coroutine = TurnToPoint(Quaternion.LookRotation(wayPoints[wayPointIndex].position - transform.position), rotationSpeed);
             // Set the agent to turn to the currently selected destination.            
 
             StartCoroutine(coroutine);
