@@ -9,14 +9,6 @@ namespace SA
         float horizontal;
         float vertical;
 
-        bool aimInput;
-        bool sprintInput;
-        bool shootInput;
-        bool crouchInput;
-        bool reloadInput;
-        bool switchInput;
-        bool pivotInput;
-
         bool isInit;
 
         float delta;
