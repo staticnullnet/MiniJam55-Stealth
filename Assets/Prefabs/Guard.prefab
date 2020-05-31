@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 4534099872209594012}
   - component: {fileID: 7373614151860101560}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 8923158886028853510}
   - component: {fileID: 8923158886028774286}
   m_Layer: 0
-  m_Name: AIThirdPersonController
+  m_Name: Guard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,17 +310,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guardType: 0
-  target: {fileID: 0}
-  player: {fileID: 0}
-  angleToPlayer: 0
+  eyePosition: {fileID: 8455041978530054647}
   alertIndicator: {fileID: 492126738919969695}
   enemyFOV: 60
   maxDistance: 10
   rotationSpeed: 500
-  turnDelay: 2
-  points:
-  - {fileID: 0}
-  - {fileID: 0}
+  minDistance: 0.5
+  moveDelay: 5
+  wayPointIndex: 0
+  wayPoints: []
 --- !u!114 &8923158886028774286
 MonoBehaviour:
   m_ObjectHideFlags: 0
