@@ -6,7 +6,7 @@ public class CameraTrigger : MonoBehaviour
 {
     private CameraManager cm;
     private bool areaTriggered;
-    public Transform newCameraLocation;
+    public Transform[] newCameraLocations;
     public float cameraMoveSpeed = 2f;
     public bool targetPlayer;
     
@@ -27,7 +27,7 @@ public class CameraTrigger : MonoBehaviour
         if (!areaTriggered) {
             if (other.tag == "Player")
             {
-                cm.MoveCamera(newCameraLocation, cameraMoveSpeed, targetPlayer);
+                cm.MoveCamera(newCameraLocations, cameraMoveSpeed, targetPlayer);
             }
         }
         

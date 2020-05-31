@@ -7,8 +7,12 @@ public class CameraManager : MonoBehaviour
     private GameObject player;
     private bool cameraPosLocked;
     private bool cameraTargetPlayer;
+    private int currentCameraWaypoint = 0;
 
+    //the direct next movement
     private Transform newPosition;
+    //all movements the camera has to make
+    private Transform[] newPositions;
 
     private float cameraMoveSpeed;
 
@@ -26,10 +30,23 @@ public class CameraManager : MonoBehaviour
     private void Update()
     {
         if (cameraPosLocked == false) {
+
             float step = cameraMoveSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, newPosition.position, step);
             if (transform.position == newPosition.position) {
-                cameraPosLocked = true;
+                if (transform.position == newPosition.position && newPositions.Length == currentCameraWaypoint)
+                {
+                    cameraPosLocked = true;
+                }
+                else
+                {
+                    currentCameraWaypoint++;
+                }
+                
+            }
+            if (newPositions.Length > 1)
+            {
+                newPosition = newPositions[currentCameraWaypoint];
             }
         }
         if (cameraPosLocked && cameraTargetPlayer) {
@@ -37,10 +54,11 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    public void MoveCamera(Transform newPos, float moveSpeed, bool targetPlayer)
+    public void MoveCamera(Transform[] newPos, float moveSpeed, bool targetPlayer)
     {
         cameraPosLocked = false;
-        newPosition = newPos;
+        newPositions = newPos;
+        newPosition = newPos[0];
         cameraTargetPlayer = targetPlayer;
         cameraMoveSpeed = moveSpeed;
     }
