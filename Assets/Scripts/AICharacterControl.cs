@@ -1,3 +1,4 @@
+using SA;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -9,7 +10,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
     {
         Idle,
         Turn,
-        Patrol
+        Patrol,
+        Chasing
     }
 
     [RequireComponent(typeof (UnityEngine.AI.NavMeshAgent))]
@@ -23,7 +25,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
         
         
-        Transform player; // player reference
+        GameObject player; // player reference
         Transform target; // target to aim for
         [SerializeField] Transform eyePosition; // where to look from
 
@@ -45,7 +47,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // get the components on the object we need ( should not be null due to require component so no need to check )
             agent = GetComponentInChildren<UnityEngine.AI.NavMeshAgent>();
             character = GetComponent<ThirdPersonCharacter>();
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Player");
 
             agent.updateRotation = false;
 	        agent.updatePosition = true;
@@ -55,7 +57,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         private void Update()
         {
-            IsPlayerVisible();
+            if (IsPlayerVisible())
+            {
+                this.guardType = GuardType.Chasing;
+                                
+                StartLoseSequence();
+            }
 
             switch (guardType)
             {
@@ -67,6 +74,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                     break;
                 case GuardType.Patrol:
                         Patrol();
+                    break;
+                case GuardType.Chasing:
+                    Chase();
                     break;
             }
             
@@ -80,7 +90,25 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             //else
             //    character.Move(Vector3.zero, false, false);
         }
-   
+
+        private void StartLoseSequence()
+        {
+            InputHandler inputHandler = player.GetComponentInChildren<InputHandler>();
+            StatesManager statesManager = player.GetComponent<StatesManager>();
+            inputHandler.freezeMovement = true;
+            statesManager.Stop();
+        }
+
+        private void Chase()
+        {   
+            agent.SetDestination(player.transform.position);
+
+            if (agent.remainingDistance > agent.stoppingDistance)
+                character.Move(agent.desiredVelocity, false, false);
+            else
+                character.Move(Vector3.zero, false, false);
+        }
+
         private void Patrol()
         { 
             // Returns if no points have been set up
@@ -118,7 +146,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 patrolTimer = 0;
             }
             
-            agent.destination = wayPoints[wayPointIndex].position;             
+            if (agent.destination != wayPoints[wayPointIndex].position)
+                agent.destination = wayPoints[wayPointIndex].position;
         }
 
         private bool IsPlayerVisible()

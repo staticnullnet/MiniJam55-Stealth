@@ -10,7 +10,7 @@ namespace SA
         public ControllerStates states;
         public InputVariables inp;
 
-        
+
 
         [System.Serializable]
         public class InputVariables
@@ -31,7 +31,7 @@ namespace SA
             public bool isRunning;
             public bool isInteracting;
         }
-    
+
         public Animator anim;
         public GameObject activeModel;
         [HideInInspector]
@@ -80,7 +80,7 @@ namespace SA
 
         void SetupAnimator()
         {
-            if(activeModel == null)
+            if (activeModel == null)
             {
                 anim = GetComponentInChildren<Animator>();
                 activeModel = anim.gameObject;
@@ -97,7 +97,7 @@ namespace SA
             Rigidbody[] rigids = activeModel.GetComponentsInChildren<Rigidbody>();
             foreach (Rigidbody r in rigids)
             {
-                if(r == rigid)
+                if (r == rigid)
                 {
                     continue;
                 }
@@ -107,7 +107,7 @@ namespace SA
                 ragdollRigids.Add(r);
                 ragdollColliders.Add(c);
                 r.isKinematic = true;
-                r.gameObject.layer = 10; 
+                r.gameObject.layer = 10;
             }
         }
 
@@ -207,10 +207,10 @@ namespace SA
             Vector3 dir = -Vector3.up;
             float dis = 0.7f;
             RaycastHit hit;
-            if(Physics.Raycast(origin,dir,out hit, dis, ignoreForGround))
+            if (Physics.Raycast(origin, dir, out hit, dis, ignoreForGround))
             {
                 Vector3 tp = hit.point;
-                Debug.Log("standing on: " + hit.collider.gameObject.name);
+                //Debug.Log("standing on: " + hit.collider.gameObject.name);
                 mTransform.position = tp;
                 return true;
             }
@@ -236,11 +236,12 @@ namespace SA
 
             if (OnGround() && crouch)
             {
-                if (m_Capsule.height == defaultCapsuleHeight) {
+                if (m_Capsule.height == defaultCapsuleHeight)
+                {
                     m_Capsule.height = m_Capsule.height / 2f;
                     m_Capsule.center = m_Capsule.center / 2f;
                 }
-                
+
             }
             else
             {
@@ -248,8 +249,15 @@ namespace SA
                 m_Capsule.center = defaultCapsuleCenter;
             }
         }
-
+        public void Stop()
+        {
+            anim.SetFloat("vertical", 0);
+            inp.horizontal = 0;
+            inp.vertical = 0;
+            inp.moveAmount = Mathf.Clamp01(Mathf.Abs(0) + Mathf.Abs(0));
+        }
     }
+
 
     public enum CharState
     {
