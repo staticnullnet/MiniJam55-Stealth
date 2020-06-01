@@ -210,6 +210,7 @@ namespace SA
             if(Physics.Raycast(origin,dir,out hit, dis, ignoreForGround))
             {
                 Vector3 tp = hit.point;
+                Debug.Log("standing on: " + hit.collider.gameObject.name);
                 mTransform.position = tp;
                 return true;
             }
