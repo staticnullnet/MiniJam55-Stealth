@@ -172,7 +172,7 @@ namespace SA
         void HandleAnimationsNormal()
         {
             float anim_v = inp.moveAmount;
-            anim.SetFloat("vertical", anim_v, 0.15f, delta);
+            anim.SetFloat("vertical", anim_v);
         }
 
         void MovementAiming()
