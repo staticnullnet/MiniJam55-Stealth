@@ -192,6 +192,8 @@ namespace SA
                     break;
                 case CharState.onAir:
                     states.onGround = OnGround();
+                    HandleAnimationsNormal();
+
                     break;
                 default:
                     break;
