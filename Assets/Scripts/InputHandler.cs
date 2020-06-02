@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace SA
 {
+    
     public class InputHandler : MonoBehaviour
     {
+        public bool freezeMovement = false;
         float horizontal;
         float vertical;
 
@@ -63,16 +65,23 @@ namespace SA
 
         void InGame_UpdateStates_FixedUpdate()
         {
-            states.inp.horizontal = horizontal;
-            states.inp.vertical = vertical;
-            states.inp.moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
+            if (!freezeMovement)
+            {
+                states.inp.horizontal = horizontal;
+                states.inp.vertical = vertical;
+                states.inp.moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
 
-            Vector3 moveDir = camHolder.forward * vertical;
-            moveDir += camHolder.right * horizontal;
-            moveDir.Normalize();
-            states.inp.moveDirection = moveDir;
+                Vector3 moveDir = camHolder.forward * vertical;
+                moveDir += camHolder.right * horizontal;
+                moveDir.Normalize();
+                states.inp.moveDirection = moveDir;
+            }
+            else
+            {
 
+            }
         }
+
 
         void Update()
         {
@@ -80,10 +89,12 @@ namespace SA
                 return;
 
             delta = Time.deltaTime;
+            if (!freezeMovement)
+            {
+                GetInput_Update();
 
-            GetInput_Update();
-        
-            states.Tick(delta);
+                states.Tick(delta);
+            }
         }
 
 

@@ -56,7 +56,7 @@ public class CameraManager : MonoBehaviour
                         if (newPositions.Length != currentCameraWaypoint && currentCameraWaypoint <= newPositions.Length)
                         {
                             currentCameraWaypoint += 1;
-                            Debug.Log("current waypoint: " + currentCameraWaypoint + " current positions array length: " + newPositions.Length);
+                            //Debug.Log("current waypoint: " + currentCameraWaypoint + " current positions array length: " + newPositions.Length);
                         }
                     }
 
