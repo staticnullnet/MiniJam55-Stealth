@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class WinTrigger : MonoBehaviour
 {
     [SerializeField] float loadLevelDelay = 1f;
-
+    [SerializeField] GameObject gate;
+    bool levelLoading = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,15 +26,22 @@ public class WinTrigger : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            InputHandler inputHandler = other.gameObject.GetComponent<InputHandler>();
-            inputHandler.freezeMovement = true;
-            Invoke("LoadFirstLevel", loadLevelDelay);
-            
+            //InputHandler inputHandler = other.gameObject.GetComponent<InputHandler>();
+            //inputHandler.freezeMovement = true;
+
+            // TODO: Make gate move up
+            //gate.transform.Translate(Vector3.up * 50 * Time.deltaTime, Space.World);
+            gate.SetActive(false);
+            if (!levelLoading)
+            {
+                levelLoading = true;
+                Invoke("LoadFirstLevel", loadLevelDelay);
+            }
         }
     }
 
     private void LoadFirstLevel()
-    {
+    {        
         Debug.Log("Win!"); Debug.Log("Loading Level");
         SceneManager.LoadSceneAsync("WinScreen");
     }

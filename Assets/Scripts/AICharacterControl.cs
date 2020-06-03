@@ -2,6 +2,7 @@ using SA;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
@@ -11,7 +12,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         Idle,
         Turn,
         Patrol,
-        Chasing
+        Chasing,
+        Caught
     }
 
     [RequireComponent(typeof (UnityEngine.AI.NavMeshAgent))]
@@ -23,11 +25,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         public UnityEngine.AI.NavMeshAgent agent { get; private set; }             // the navmesh agent required for the path finding
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
-        
-        
+        float loadLevelDelay = 3f;
+
         GameObject player; // player reference
         Transform target; // target to aim for
         [SerializeField] Transform eyePosition; // where to look from
+        [SerializeField] float playerStoppingDistance = 4f;
 
         float patrolTimer = 0f;
         [SerializeField] GameObject alertIndicator;
@@ -40,7 +43,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private bool isMoving = false;
         public Transform[] wayPoints;
         float angleToPlayer;
-
+        GameObject losePopup;
+        bool levelLoading = false;
 
         private void Start()
         {
@@ -48,7 +52,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             agent = GetComponentInChildren<UnityEngine.AI.NavMeshAgent>();
             character = GetComponent<ThirdPersonCharacter>();
             player = GameObject.FindGameObjectWithTag("Player");
+            losePopup = GameObject.FindGameObjectWithTag("Lose");
 
+            losePopup.GetComponent<Canvas>().enabled = false;
+            
+                        
             agent.updateRotation = false;
 	        agent.updatePosition = true;
                         
@@ -58,9 +66,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private void Update()
         {
             if (IsPlayerVisible())
-            {
-                this.guardType = GuardType.Chasing;
-                                
+            {                
+                //if (this.guardType != GuardType.Caught)
+                    this.guardType = GuardType.Chasing;
+
                 StartLoseSequence();
             }
 
@@ -92,21 +101,31 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         }
 
         private void StartLoseSequence()
-        {
-            InputHandler inputHandler = player.GetComponentInChildren<InputHandler>();
-            StatesManager statesManager = player.GetComponent<StatesManager>();
-            inputHandler.freezeMovement = true;
-            statesManager.Stop();
+        {            
+            if (!levelLoading)
+            {
+                losePopup.GetComponent<Canvas>().enabled = true;
+                levelLoading = true;
+                Invoke("LoadFirstLevel", loadLevelDelay);
+
+                InputHandler inputHandler = player.GetComponentInChildren<InputHandler>();
+                StatesManager statesManager = player.GetComponent<StatesManager>();
+                inputHandler.freezeMovement = true;
+                statesManager.Stop();
+            }
         }
 
         private void Chase()
         {   
             agent.SetDestination(player.transform.position);
 
-            if (agent.remainingDistance > agent.stoppingDistance)
+            if (agent.remainingDistance > playerStoppingDistance)
                 character.Move(agent.desiredVelocity, false, false);
             else
+            {
                 character.Move(Vector3.zero, false, false);
+                guardType = GuardType.Caught;
+            }
         }
 
         private void Patrol()
@@ -248,5 +267,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
             StartCoroutine(coroutine);
         }
+
+        private void LoadFirstLevel()
+        {
+            Debug.Log("Lose!"); Debug.Log("Loading Level");
+            SceneManager.LoadSceneAsync("castle_intro");
+        }
     }
 }
+
+
+            
+   

@@ -8,12 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 9c506f9f1d46a964a9dd06778218652b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/IntroText.unity
     guid: 1f35c516bead3c54da641f378f257517
   - enabled: 1
-    path: Assets/Scenes/Scene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/castle_intro.unity
+    guid: f87de3dc42d517e4c9ad263600091570
   - enabled: 1
     path: Assets/Scenes/WinScreen.unity
     guid: ea50ce628dd1dfa488b2396f11be5255

@@ -18,7 +18,8 @@ public class MenuScreenController : MonoBehaviour
     }
     public void LoadNextScene()
     {
-        SceneManager.LoadSceneAsync("IntroText");
+        //SceneManager.LoadSceneAsync("IntroText");
+        SceneManager.LoadSceneAsync("castle_intro");
 
         //if (Input.GetMouseButtonDown(0))
         //{
