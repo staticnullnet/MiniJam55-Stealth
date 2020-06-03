@@ -2,6 +2,7 @@ using SA;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
@@ -11,7 +12,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         Idle,
         Turn,
         Patrol,
-        Chasing
+        Chasing,
+        Caught
     }
 
     [RequireComponent(typeof (UnityEngine.AI.NavMeshAgent))]
@@ -23,11 +25,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         public UnityEngine.AI.NavMeshAgent agent { get; private set; }             // the navmesh agent required for the path finding
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
-        
-        
+        float loadLevelDelay = 3f;
+
         GameObject player; // player reference
         Transform target; // target to aim for
         [SerializeField] Transform eyePosition; // where to look from
+        [SerializeField] float playerStoppingDistance = 4f;
 
         float patrolTimer = 0f;
         [SerializeField] GameObject alertIndicator;
@@ -58,9 +61,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private void Update()
         {
             if (IsPlayerVisible())
-            {
-                this.guardType = GuardType.Chasing;
-                                
+            {                
+                //if (this.guardType != GuardType.Caught)
+                    this.guardType = GuardType.Chasing;
+
                 StartLoseSequence();
             }
 
@@ -97,16 +101,30 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             StatesManager statesManager = player.GetComponent<StatesManager>();
             inputHandler.freezeMovement = true;
             statesManager.Stop();
+
+            //TO DO - get working
+            //GameObject LosePopup;
+            //if ((LosePopup = GameObject.FindGameObjectWithTag("Lose")) != null)
+            //{
+            //    LosePopup.SetActive(true);
+            //    LosePopup.transform.position = Camera.main.transform.position;
+            //}
+
+          //  Invoke("LoadFirstLevel", loadLevelDelay);
+
         }
 
         private void Chase()
         {   
             agent.SetDestination(player.transform.position);
 
-            if (agent.remainingDistance > agent.stoppingDistance)
+            if (agent.remainingDistance > playerStoppingDistance)
                 character.Move(agent.desiredVelocity, false, false);
             else
+            {
                 character.Move(Vector3.zero, false, false);
+                guardType = GuardType.Caught;
+            }
         }
 
         private void Patrol()
@@ -248,5 +266,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
             StartCoroutine(coroutine);
         }
+
+        private void LoadFirstLevel()
+        {
+            Debug.Log("Lose!"); Debug.Log("Loading Level");
+            SceneManager.LoadSceneAsync("castle_intro");
+        }
     }
 }
+
+
+            
+   

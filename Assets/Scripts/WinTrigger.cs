@@ -25,8 +25,8 @@ public class WinTrigger : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            InputHandler inputHandler = other.gameObject.GetComponent<InputHandler>();
-            inputHandler.freezeMovement = true;
+            //InputHandler inputHandler = other.gameObject.GetComponent<InputHandler>();
+            //inputHandler.freezeMovement = true;
             Invoke("LoadFirstLevel", loadLevelDelay);
             
         }
