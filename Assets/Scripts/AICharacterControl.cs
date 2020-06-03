@@ -43,7 +43,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private bool isMoving = false;
         public Transform[] wayPoints;
         float angleToPlayer;
-
+        GameObject losePopup;
+        bool levelLoading = false;
 
         private void Start()
         {
@@ -51,7 +52,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             agent = GetComponentInChildren<UnityEngine.AI.NavMeshAgent>();
             character = GetComponent<ThirdPersonCharacter>();
             player = GameObject.FindGameObjectWithTag("Player");
+            losePopup = GameObject.FindGameObjectWithTag("Lose");
 
+            losePopup.GetComponent<Canvas>().enabled = false;
+            
+                        
             agent.updateRotation = false;
 	        agent.updatePosition = true;
                         
@@ -96,22 +101,18 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         }
 
         private void StartLoseSequence()
-        {
-            InputHandler inputHandler = player.GetComponentInChildren<InputHandler>();
-            StatesManager statesManager = player.GetComponent<StatesManager>();
-            inputHandler.freezeMovement = true;
-            statesManager.Stop();
+        {            
+            if (!levelLoading)
+            {
+                losePopup.GetComponent<Canvas>().enabled = true;
+                levelLoading = true;
+                Invoke("LoadFirstLevel", loadLevelDelay);
 
-            //TO DO - get working
-            //GameObject LosePopup;
-            //if ((LosePopup = GameObject.FindGameObjectWithTag("Lose")) != null)
-            //{
-            //    LosePopup.SetActive(true);
-            //    LosePopup.transform.position = Camera.main.transform.position;
-            //}
-
-          //  Invoke("LoadFirstLevel", loadLevelDelay);
-
+                InputHandler inputHandler = player.GetComponentInChildren<InputHandler>();
+                StatesManager statesManager = player.GetComponent<StatesManager>();
+                inputHandler.freezeMovement = true;
+                statesManager.Stop();
+            }
         }
 
         private void Chase()
